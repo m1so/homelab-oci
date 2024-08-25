@@ -11,12 +11,12 @@ on:
       - "v*.*.*"
   pull_request:
 
-env:
-  IMAGE_NAME: universal
-
 jobs:
   docker:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image: [universal, bootstrap]
 
     permissions:
       # https://docs.github.com/en/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions#publishing-a-package-using-an-action
@@ -32,7 +32,7 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            ghcr.io/${{ github.repository_owner }}/homelab-${{ env.IMAGE_NAME }}
+            ghcr.io/${{ github.repository_owner }}/homelab/${{ matrix.image }}
           # generate Docker tags based on the following events/attributes
           tags: |
             type=schedule
@@ -61,7 +61,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64,linux/arm64
-          file: 'images/${{ env.IMAGE_NAME }}/Dockerfile'
+          file: 'images/${{ matrix.image }}/Dockerfile'
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
