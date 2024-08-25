@@ -17,6 +17,14 @@ env:
 jobs:
   docker:
     runs-on: ubuntu-latest
+
+    permissions:
+      # https://docs.github.com/en/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions#publishing-a-package-using-an-action
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+
     steps:
       - name: Docker meta
         id: meta
