@@ -36,7 +36,7 @@ jobs:
         with:
           files_yaml: |
             images:
-              - ${{ matrix.image }}/Dockerfile
+              - images/${{ matrix.image }}/Dockerfile
 
       - name: Docker meta
         id: meta
