@@ -15,3 +15,7 @@ RUN \
     apt-get clean; \
     rm -rf /var/lib/apt/lists/*; \
     echo "Done!"
+
+RUN adduser --disabled-password --gecos "" --uid 1001 runner
+WORKDIR /home/runner
+USER runner
